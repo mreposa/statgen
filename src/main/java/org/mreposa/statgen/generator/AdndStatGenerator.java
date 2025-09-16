@@ -76,15 +76,6 @@ public class AdndStatGenerator implements StatGenerator {
                     total = PlayerCharacterClass.MAX_STAT_VALUE;
                 }
 
-                // Generate Exceptional ST value (0 - 100)
-                if (statSlot == 1) {
-                    if (stats[0] == 18) {
-                        stats[1] = rand.nextInt(100) + 1;
-                    } else {
-                        stats[1] = 0;
-                    }
-                }
-
                 // Adjust stats for race (allows for a stat to be 19)
                 total = total + raceUpdates[statSlot];
 
@@ -92,6 +83,15 @@ public class AdndStatGenerator implements StatGenerator {
                 if (statSlot == 3 && selectedClass.equals(PlayerCharacterClass.AVAILABLE_CLASSES[7])) {
                     if (total > 16) {
                         total = 16;
+                    }
+                }
+
+                // Generate Exceptional ST value (0 - 100)
+                if (statSlot == 1) {
+                    if (stats[0] == 18) {
+                        total = rand.nextInt(100) + 1;
+                    } else {
+                        total = 0;
                     }
                 }
 
