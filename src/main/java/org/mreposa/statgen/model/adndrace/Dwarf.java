@@ -9,4 +9,11 @@ public class Dwarf extends PlayerCharacterRace {
         updates[6] = -1;
         return updates;
     }
+
+    @Override
+    public int[] getMinimums() {
+        minimums[0] = 8;
+        minimums[5] = 12;
+        return minimums;
+    }
 }

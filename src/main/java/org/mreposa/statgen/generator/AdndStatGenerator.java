@@ -22,6 +22,7 @@ public class AdndStatGenerator implements StatGenerator {
             int[] classUpdates = pcClass.getUpdates();
             int[] classMinimums = pcClass.getMinimums();
             int[] raceUpdates = pcRace.getUpdates();
+            int[] raceMinimums = pcRace.getMinimums();
 
             Random rand = new Random();
             int total = 0;
@@ -78,6 +79,10 @@ public class AdndStatGenerator implements StatGenerator {
 
                 // Adjust stats for race (allows for a stat to be 19)
                 total = total + raceUpdates[statSlot];
+
+                if (total < raceMinimums[statSlot]) {
+                    total = raceMinimums[statSlot];
+                }
 
                 // Cap Wisdom to 16 for Barbarian
                 if (statSlot == 3 && selectedClass.equals(PlayerCharacterClass.AVAILABLE_CLASSES[7])) {

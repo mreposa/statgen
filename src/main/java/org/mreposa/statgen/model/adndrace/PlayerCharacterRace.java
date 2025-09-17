@@ -4,8 +4,10 @@ public abstract class PlayerCharacterRace {
     public static final String[] AVAILABLE_RACES = {"Human", "Half-Elf", "Gnome", "Deep Gnome", "Hill Dwarf", "Mountain Dwarf", "Gray Dwarf", "High Elf", "Gray Elf", "Wood Elf", "Wild Elf", "Valley Elf", "Dark Elf", "Hairfoot Halfling", "Tallfellow Halfling", "Stout Halfling", "Half-Orc"};
 
     protected int[] updates = {0, 0, 0, 0, 0, 0, 0};
+    protected int[] minimums = {3, 0, 3, 3, 3, 3, 3};
 
     public abstract int[] getUpdates();
+    public abstract int[] getMinimums();
 
     public static PlayerCharacterRace getPlayerCharacterRace(String selectedRace) {
         PlayerCharacterRace pcRace = null;
@@ -51,7 +53,10 @@ public abstract class PlayerCharacterRace {
                     pcRace = new HalfOrc();
                     break;
                 }
-                case "Half-Elf":
+                case "Half-Elf": {
+                    pcRace = new HalfElf();
+                    break;
+                }
                 default: {
                     pcRace = new Human();
                     break;

@@ -9,4 +9,13 @@ public class HighElf extends PlayerCharacterRace {
         updates[5] = -1;
         return updates;
     }
+
+    @Override
+    public int[] getMinimums() {
+        minimums[2] = 8;
+        minimums[4] = 7;
+        minimums[5] = 6;
+        minimums[6] = 8;
+        return minimums;
+    }
 }

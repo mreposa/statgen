@@ -10,4 +10,11 @@ public class HalfOrc extends PlayerCharacterRace {
         updates[6] = -2;
         return updates;
     }
+
+    @Override
+    public int[] getMinimums() {
+        minimums[0] = 6;
+        minimums[5] = 13;
+        return minimums;
+    }
 }
