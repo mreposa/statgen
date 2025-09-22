@@ -1,18 +1,21 @@
 package org.mreposa.statgen.model.adndrace;
 
+import org.mreposa.statgen.model.adndclass.PlayerCharacterClass;
+
 public class Gnome extends PlayerCharacterRace {
     public Gnome() { super(); }
 
     @Override
     public int[] getUpdates() {
+        updates[PlayerCharacterClass.STAT_COM] = -1;
         return updates;
     }
 
     @Override
     public int[] getMinimums() {
-        minimums[0] = 6;
-        minimums[2] = 7;
-        minimums[5] = 8;
+        minimums[PlayerCharacterClass.STAT_STR] = 6;
+        minimums[PlayerCharacterClass.STAT_INT] = 7;
+        minimums[PlayerCharacterClass.STAT_CON] = 8;
         return minimums;
     }
 }

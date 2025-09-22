@@ -1,5 +1,7 @@
 package org.mreposa.statgen.model.adndrace;
 
+import org.mreposa.statgen.model.adndclass.PlayerCharacterClass;
+
 public class HalfElf extends PlayerCharacterRace {
     public HalfElf() { super(); }
 
@@ -10,9 +12,10 @@ public class HalfElf extends PlayerCharacterRace {
 
     @Override
     public int[] getMinimums() {
-        minimums[2] = 4;
-        minimums[4] = 6;
-        minimums[5] = 6;
+        minimums[PlayerCharacterClass.STAT_INT] = 4;
+        minimums[PlayerCharacterClass.STAT_DEX] = 6;
+        minimums[PlayerCharacterClass.STAT_CON] = 6;
+        updates[PlayerCharacterClass.STAT_COM] = 1;
         return minimums;
     }
 }

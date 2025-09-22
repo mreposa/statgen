@@ -1,20 +1,23 @@
 package org.mreposa.statgen.model.adndrace;
 
+import org.mreposa.statgen.model.adndclass.PlayerCharacterClass;
+
 public class HalfOrc extends PlayerCharacterRace {
     public HalfOrc() { super(); }
 
     @Override
     public int[] getUpdates() {
-        updates[0] = 1;
-        updates[5] = 1;
-        updates[6] = -2;
+        updates[PlayerCharacterClass.STAT_STR] = 1;
+        updates[PlayerCharacterClass.STAT_CON] = 1;
+        updates[PlayerCharacterClass.STAT_CHA] = -2;
+        updates[PlayerCharacterClass.STAT_COM] = -3;
         return updates;
     }
 
     @Override
     public int[] getMinimums() {
-        minimums[0] = 6;
-        minimums[5] = 13;
+        minimums[PlayerCharacterClass.STAT_STR] = 6;
+        minimums[PlayerCharacterClass.STAT_CON] = 13;
         return minimums;
     }
 }

@@ -2,7 +2,11 @@ package org.mreposa.statgen.model.adndmethod;
 
 import java.util.Random;
 
-public class FourDSixDropLowest implements StatMethod {
+public class FourDSixDropLowest extends StatMethod {
+    public FourDSixDropLowest() {
+        super();
+    }
+
     public int generate(Random rand) {
         int total = 0;
         int[] rolls = new int[4];

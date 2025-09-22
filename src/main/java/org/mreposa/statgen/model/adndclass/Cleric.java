@@ -5,15 +5,15 @@ public class Cleric extends PlayerCharacterClass {
 
     @Override
     public int[] getUpdates() {
-        updates[3] = PRIMARY_UPDATE_VALUE;
-        updates[5] = SECONDARY_UPDATE_VALUE;
-        updates[0] = TERTIARY_UPDATE_VALUE;
+        updates[STAT_WIS] = PRIMARY_UPDATE_VALUE;
+        updates[STAT_CON] = SECONDARY_UPDATE_VALUE;
+        updates[STAT_STR] = TERTIARY_UPDATE_VALUE;
         return updates;
     }
 
     @Override
     public int[] getMinimums() {
-        minimums[3] = 9;
+        minimums[STAT_WIS] = 9;
         return minimums;
     }
 }

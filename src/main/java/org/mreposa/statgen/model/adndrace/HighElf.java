@@ -1,21 +1,24 @@
 package org.mreposa.statgen.model.adndrace;
 
+import org.mreposa.statgen.model.adndclass.PlayerCharacterClass;
+
 public class HighElf extends PlayerCharacterRace {
     public HighElf() { super(); }
 
     @Override
     public int[] getUpdates() {
-        updates[4] = 1;
-        updates[5] = -1;
+        updates[PlayerCharacterClass.STAT_DEX] = 1;
+        updates[PlayerCharacterClass.STAT_CON] = -1;
+        updates[PlayerCharacterClass.STAT_COM] = 2;
         return updates;
     }
 
     @Override
     public int[] getMinimums() {
-        minimums[2] = 8;
-        minimums[4] = 7;
-        minimums[5] = 6;
-        minimums[6] = 8;
+        minimums[PlayerCharacterClass.STAT_INT] = 8;
+        minimums[PlayerCharacterClass.STAT_DEX] = 7;
+        minimums[PlayerCharacterClass.STAT_CON] = 6;
+        minimums[PlayerCharacterClass.STAT_CHA] = 8;
         return minimums;
     }
 }

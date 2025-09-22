@@ -7,17 +7,17 @@ public class Barbarian extends PlayerCharacterClass {
 
     @Override
     public int[] getUpdates() {
-        updates[0] = PRIMARY_UPDATE_VALUE;
-        updates[5] = SECONDARY_UPDATE_VALUE;
-        updates[4] = TERTIARY_UPDATE_VALUE;
+        updates[STAT_STR] = PRIMARY_UPDATE_VALUE;
+        updates[STAT_CON] = SECONDARY_UPDATE_VALUE;
+        updates[STAT_DEX] = TERTIARY_UPDATE_VALUE;
         return updates;
     }
 
     @Override
     public int[] getMinimums() {
-        minimums[0] = 15;
-        minimums[4] = 14;
-        minimums[5] = 15;
+        minimums[STAT_STR] = 15;
+        minimums[STAT_DEX] = 14;
+        minimums[STAT_CON] = 15;
         return minimums;
     }
 }

@@ -13,7 +13,7 @@ public class AdndStatGenerator implements StatGenerator {
 
     @Override
     public int[] generate(String selectedClass, String selectedRace, String selectedMethod) {
-        int[] stats = new int[PlayerCharacterClass.STAT_COUNT];
+        int[] stats = new int[PlayerCharacterClass.AVAILABLE_STATS.length];
 
         if (selectedClass != null && selectedRace != null && selectedMethod != null && !selectedMethod.isBlank()) {
             PlayerCharacterClass pcClass = PlayerCharacterClass.getPlayerCharacterClass(selectedClass);
@@ -24,44 +24,94 @@ public class AdndStatGenerator implements StatGenerator {
             int[] raceUpdates = pcRace.getUpdates();
             int[] raceMinimums = pcRace.getMinimums();
 
-            Random rand = new Random();
-            int total = 0;
+            Random rand = new Random(System.currentTimeMillis());
+            int total;
             StatMethod method;
 
-            for (int statSlot = 0; statSlot < PlayerCharacterClass.STAT_COUNT; statSlot++) {
+            for (int statSlot = 0; statSlot < PlayerCharacterClass.AVAILABLE_STATS.length; statSlot++) {
+                // Generate base stat value
+                if (selectedMethod.equals(StatMethod.AVAILABLE_METHODS[1])) {
+                    method = new ThreeDSix();
+                    total = method.generate(rand);
 
-                switch (selectedMethod) {
-                    case "3d6": {
-                        method = new ThreeDSix();
-                        total = method.generate(rand);
+                    // Adjust stats using class updates
+                    total = total + classUpdates[statSlot];
+                }
+                else if (selectedMethod.equals(StatMethod.AVAILABLE_METHODS[2])) {
+                    method = new FiveDSixBestThree();
+                    total = method.generate(rand);
+                }
+                else if (selectedMethod.equals(StatMethod.AVAILABLE_METHODS[3])) {
+                    method = new FourDSixDropLowest();
+                    total = method.generate(rand);
+                }
+                else if (selectedMethod.equals(StatMethod.AVAILABLE_METHODS[4])) {
+                    method = new ThreeDSixSixTimes();
+                    total = method.generate(rand);
+                }
+                else {
+                    method = new ThreeDSix();
+                    total = method.generate(rand);
+                }
 
+                if (total > PlayerCharacterClass.MAX_STAT_VALUE) {
+                    total = PlayerCharacterClass.MAX_STAT_VALUE;
+                }
+
+                // Adjust stat for race (allows for stat to be higher than PlayerCharacterClass.MAX_STAT_VALUE)
+                total = total + raceUpdates[statSlot];
+                if (total < raceMinimums[statSlot]) {
+                    total = raceMinimums[statSlot];
+                }
+
+                switch (statSlot) {
+                    case PlayerCharacterClass.STAT_EX_STR: {
+                        // Generate Exceptional ST value (0 - 100)
+                        if (stats[PlayerCharacterClass.STAT_STR] == PlayerCharacterClass.MAX_STAT_VALUE) {
+                            total = rand.nextInt(100) + 1;
+                        } else {
+                            total = 0;
+                        }
                         break;
                     }
-                    case "3d6 plus updates": {
-                        method = new ThreeDSix();
-                        total = method.generate(rand);
-
-                        // Adjust stats using class updates
-                        total = total + classUpdates[statSlot];
-
+                    case PlayerCharacterClass.STAT_WIS: {
+                        // Cap Wisdom for Barbarian
+                        if (selectedClass.equals(PlayerCharacterClass.AVAILABLE_CLASSES[PlayerCharacterClass.CLASS_BARBARIAN]) && total > PlayerCharacterClass.MAX_WIS_STAT_BARBARIAN) {
+                            total = PlayerCharacterClass.MAX_WIS_STAT_BARBARIAN;
+                        }
                         break;
                     }
-                    case "5d6 best three": {
-                        method = new FiveDSixBestThree();
-                        total = method.generate(rand);
+                    case PlayerCharacterClass.STAT_COM: {
+                        // Adjust Comeliness for Charisma
+                        if (stats[PlayerCharacterClass.STAT_CHA] < 3) {
+                            total = total - 8;
+                        }
+                        else if (stats[PlayerCharacterClass.STAT_CHA] == 3) {
+                            total = total - 5;
+                        }
+                        else if (stats[PlayerCharacterClass.STAT_CHA] == 4 || stats[PlayerCharacterClass.STAT_CHA] == 5) {
+                            total = total - 3;
+                        }
+                        else if (stats[PlayerCharacterClass.STAT_CHA] == 6 || stats[PlayerCharacterClass.STAT_CHA] == 7 || stats[PlayerCharacterClass.STAT_CHA] == 8) {
+                            total = total - 1;
+                        }
+                        else if (stats[PlayerCharacterClass.STAT_CHA] == 13 || stats[PlayerCharacterClass.STAT_CHA] == 14 || stats[PlayerCharacterClass.STAT_CHA] == 15) {
+                            total = total + 1;
+                        }
+                        else if (stats[PlayerCharacterClass.STAT_CHA] == 16 || stats[PlayerCharacterClass.STAT_CHA] == 17) {
+                            total = total + 2;
+                        }
+                        else if (stats[PlayerCharacterClass.STAT_CHA] == 18) {
+                            total = total + 3;
+                        }
+                        else if (stats[PlayerCharacterClass.STAT_CHA] > 18) {
+                            total = total + 5;
+                        }
 
-                        break;
-                    }
-                    case "4d6 drop lowest": {
-                        method = new FourDSixDropLowest();
-                        total = method.generate(rand);
-
-                        break;
-                    }
-                    case "3d6 six times take best": {
-                        method = new ThreeDSixSixTimes();
-                        total = method.generate(rand);
-
+                        // Cap Comeliness for character from the Prime Material Plane
+                        if (total > PlayerCharacterClass.MAX_COM_STAT_VALUE) {
+                            total = PlayerCharacterClass.MAX_COM_STAT_VALUE;
+                        }
                         break;
                     }
                     default: {
@@ -69,40 +119,12 @@ public class AdndStatGenerator implements StatGenerator {
                     }
                 }
 
+                // Adjust minimum stats for class to ensure selected class minimums are met
                 if (total < classMinimums[statSlot]) {
                     total = classMinimums[statSlot];
                 }
 
-                if (total > PlayerCharacterClass.MAX_STAT_VALUE) {
-                    total = PlayerCharacterClass.MAX_STAT_VALUE;
-                }
-
-                // Adjust stats for race (allows for a stat to be 19)
-                total = total + raceUpdates[statSlot];
-
-                if (total < raceMinimums[statSlot]) {
-                    total = raceMinimums[statSlot];
-                }
-
-                // Cap Wisdom to 16 for Barbarian
-                if (statSlot == 3 && selectedClass.equals(PlayerCharacterClass.AVAILABLE_CLASSES[7])) {
-                    if (total > 16) {
-                        total = 16;
-                    }
-                }
-
-                // Generate Exceptional ST value (0 - 100)
-                if (statSlot == 1) {
-                    if (stats[0] == 18) {
-                        total = rand.nextInt(100) + 1;
-                    } else {
-                        total = 0;
-                    }
-                }
-
                 stats[statSlot] = total;
-
-                total = 0;
             }
         }
 

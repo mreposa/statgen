@@ -2,7 +2,10 @@ package org.mreposa.statgen.model.adndmethod;
 
 import java.util.Random;
 
-public class FiveDSixBestThree implements StatMethod {
+public class FiveDSixBestThree extends StatMethod {
+    public FiveDSixBestThree() {
+        super();
+    }
     public int generate(Random rand) {
         int total = 0;
         int[] rolls = new int[5];

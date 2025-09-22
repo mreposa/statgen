@@ -2,6 +2,7 @@ package org.mreposa.statgen.view;
 
 import org.mreposa.statgen.model.adndclass.PlayerCharacterClass;
 import org.mreposa.statgen.generator.AdndStatGenerator;
+import org.mreposa.statgen.model.adndmethod.StatMethod;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,44 +17,18 @@ public class AdndStatFrame extends StatFrame {
         this.setTitle(APP_TITLE);
         this.statGenerator = new AdndStatGenerator();
 
-        JRadioButton method1 = new JRadioButton();
-        method1.setText("3d6");
-        method1.setActionCommand("3d6");
-        method1.addActionListener(this);
-        this.methodButtonGroup.add(method1);
-        this.methodPanel.add(method1);
-
-        JRadioButton method2 = new JRadioButton();
-        method2.setText("3d6 plus updates");
-        method2.setActionCommand("3d6 plus updates");
-        method2.addActionListener(this);
-        this.methodButtonGroup.add(method2);
-        this.methodPanel.add(method2);
-
-        JRadioButton method3 = new JRadioButton();
-        method3.setText("5d6 best three");
-        method3.setActionCommand("5d6 best three");
-        method3.addActionListener(this);
-        this.methodButtonGroup.add(method3);
-        this.methodPanel.add(method3);
-
-        JRadioButton method4 = new JRadioButton();
-        method4.setText("4d6 drop lowest");
-        method4.setActionCommand("4d6 drop lowest");
-        method4.addActionListener(this);
-        this.methodButtonGroup.add(method4);
-        this.methodPanel.add(method4);
-
-        JRadioButton method5 = new JRadioButton();
-        method5.setText("3d6 six times take best");
-        method5.setActionCommand("3d6 six times take best");
-        method5.addActionListener(this);
-        this.methodButtonGroup.add(method5);
-        this.methodPanel.add(method5);
-
-        // Set the default method
-        this.methodButtonGroup.setSelected(method1.getModel(), true);
-        this.selectedRace = "3d6";
+        for (int a = 0; a < StatMethod.AVAILABLE_METHODS.length; a++) {
+            JRadioButton btn = new JRadioButton();
+            btn.setText(StatMethod.AVAILABLE_METHODS[a]);
+            btn.setActionCommand(StatMethod.AVAILABLE_METHODS[a]);
+            btn.addActionListener(this);
+            this.methodButtonGroup.add(btn);
+            this.methodPanel.add(btn);
+            if (a == 0) {
+                this.methodButtonGroup.setSelected(btn.getModel(), true);
+                this.selectedMethod = StatMethod.AVAILABLE_METHODS[0];
+            }
+        }
     }
 
     @Override
@@ -65,36 +40,46 @@ public class AdndStatFrame extends StatFrame {
             output.append(" ");
             output.append(this.selectedClass);
             output.append("\n");
-            output.append("ST ");
-            output.append(stats[0]);
+            output.append(PlayerCharacterClass.AVAILABLE_STATS[PlayerCharacterClass.STAT_STR]);
+            output.append(" ");
+            output.append(stats[PlayerCharacterClass.STAT_STR]);
 
-            // Display Exceptional ST value for Fighter, Paladin, Ranger, Cavalier, Cavalier Paladin, and Barbarian
-            if (stats[0] == 18 &&
-                    (this.selectedClass.equals(PlayerCharacterClass.AVAILABLE_CLASSES[2]) ||
-                            this.selectedClass.equals(PlayerCharacterClass.AVAILABLE_CLASSES[3]) ||
-                            this.selectedClass.equals(PlayerCharacterClass.AVAILABLE_CLASSES[4]) ||
-                            this.selectedClass.equals(PlayerCharacterClass.AVAILABLE_CLASSES[5]) ||
-                            this.selectedClass.equals(PlayerCharacterClass.AVAILABLE_CLASSES[6]) ||
-                            this.selectedClass.equals(PlayerCharacterClass.AVAILABLE_CLASSES[7]))) {
+            // Display Exceptional ST value for Fighter, Ranger, Paladin, Cavalier, Cavalier Paladin, and Barbarian
+            if (stats[PlayerCharacterClass.STAT_STR] == PlayerCharacterClass.MAX_STAT_VALUE &&
+                    (this.selectedClass.equals(PlayerCharacterClass.AVAILABLE_CLASSES[PlayerCharacterClass.CLASS_FIGHTER]) ||
+                            this.selectedClass.equals(PlayerCharacterClass.AVAILABLE_CLASSES[PlayerCharacterClass.CLASS_RANGER]) ||
+                            this.selectedClass.equals(PlayerCharacterClass.AVAILABLE_CLASSES[PlayerCharacterClass.CLASS_PALADIN]) ||
+                            this.selectedClass.equals(PlayerCharacterClass.AVAILABLE_CLASSES[PlayerCharacterClass.CLASS_CAVALIER]) ||
+                            this.selectedClass.equals(PlayerCharacterClass.AVAILABLE_CLASSES[PlayerCharacterClass.CLASS_CAVALIER_PALADIN]) ||
+                            this.selectedClass.equals(PlayerCharacterClass.AVAILABLE_CLASSES[PlayerCharacterClass.CLASS_BARBARIAN]))) {
                 output.append("/");
-                output.append(stats[1]);
+                output.append(stats[PlayerCharacterClass.STAT_EX_STR]);
             }
 
             output.append(", ");
-            output.append("IN ");
-            output.append(stats[2]);
+            output.append(PlayerCharacterClass.AVAILABLE_STATS[PlayerCharacterClass.STAT_INT]);
+            output.append(" ");
+            output.append(stats[PlayerCharacterClass.STAT_INT]);
             output.append(", ");
-            output.append("WI ");
-            output.append(stats[3]);
+            output.append(PlayerCharacterClass.AVAILABLE_STATS[PlayerCharacterClass.STAT_WIS]);
+            output.append(" ");
+            output.append(stats[PlayerCharacterClass.STAT_WIS]);
             output.append(", ");
-            output.append("DX ");
-            output.append(stats[4]);
+            output.append(PlayerCharacterClass.AVAILABLE_STATS[PlayerCharacterClass.STAT_DEX]);
+            output.append(" ");
+            output.append(stats[PlayerCharacterClass.STAT_DEX]);
             output.append(", ");
-            output.append("CO ");
-            output.append(stats[5]);
+            output.append(PlayerCharacterClass.AVAILABLE_STATS[PlayerCharacterClass.STAT_CON]);
+            output.append(" ");
+            output.append(stats[PlayerCharacterClass.STAT_CON]);
             output.append(", ");
-            output.append("CH ");
-            output.append(stats[6]);
+            output.append(PlayerCharacterClass.AVAILABLE_STATS[PlayerCharacterClass.STAT_CHA]);
+            output.append(" ");
+            output.append(stats[PlayerCharacterClass.STAT_CHA]);
+            output.append(", ");
+            output.append(PlayerCharacterClass.AVAILABLE_STATS[PlayerCharacterClass.STAT_COM]);
+            output.append(" ");
+            output.append(stats[PlayerCharacterClass.STAT_COM]);
             output.append("\n\n");
         }
         else {

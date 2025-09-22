@@ -7,18 +7,18 @@ public class Monk extends PlayerCharacterClass {
 
     @Override
     public int[] getUpdates() {
-        updates[4] = PRIMARY_UPDATE_VALUE;
-        updates[3] = SECONDARY_UPDATE_VALUE;
-        updates[5] = TERTIARY_UPDATE_VALUE;
+        updates[STAT_DEX] = PRIMARY_UPDATE_VALUE;
+        updates[STAT_WIS] = SECONDARY_UPDATE_VALUE;
+        updates[STAT_CON] = TERTIARY_UPDATE_VALUE;
         return updates;
     }
 
     @Override
     public int[] getMinimums() {
-        minimums[0] = 15;
-        minimums[3] = 15;
-        minimums[4] = 15;
-        minimums[5] = 11;
+        minimums[STAT_STR] = 15;
+        minimums[STAT_WIS] = 15;
+        minimums[STAT_DEX] = 15;
+        minimums[STAT_CON] = 11;
         return minimums;
     }
 }

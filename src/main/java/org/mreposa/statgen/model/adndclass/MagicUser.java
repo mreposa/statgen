@@ -7,16 +7,16 @@ public class MagicUser extends PlayerCharacterClass {
 
     @Override
     public int[] getUpdates() {
-        updates[2] = PRIMARY_UPDATE_VALUE;
-        updates[4] = SECONDARY_UPDATE_VALUE;
-        updates[5] = TERTIARY_UPDATE_VALUE;
+        updates[STAT_INT] = PRIMARY_UPDATE_VALUE;
+        updates[STAT_DEX] = SECONDARY_UPDATE_VALUE;
+        updates[STAT_CON] = TERTIARY_UPDATE_VALUE;
         return updates;
     }
 
     @Override
     public int[] getMinimums() {
-        minimums[2] = 9;
-        minimums[4] = 6;
+        minimums[STAT_INT] = 9;
+        minimums[STAT_DEX] = 6;
         return minimums;
     }
 }

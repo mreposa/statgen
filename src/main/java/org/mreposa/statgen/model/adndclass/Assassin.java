@@ -7,17 +7,17 @@ public class Assassin extends PlayerCharacterClass {
 
     @Override
     public int[] getUpdates() {
-        updates[4] = PRIMARY_UPDATE_VALUE;
-        updates[0] = SECONDARY_UPDATE_VALUE;
-        updates[2] = TERTIARY_UPDATE_VALUE;
+        updates[STAT_DEX] = PRIMARY_UPDATE_VALUE;
+        updates[STAT_STR] = SECONDARY_UPDATE_VALUE;
+        updates[STAT_INT] = TERTIARY_UPDATE_VALUE;
         return updates;
     }
 
     @Override
     public int[] getMinimums() {
-        minimums[0] = 12;
-        minimums[2] = 11;
-        minimums[4] = 12;
+        minimums[STAT_STR] = 12;
+        minimums[STAT_INT] = 11;
+        minimums[STAT_DEX] = 12;
         return minimums;
     }
 }

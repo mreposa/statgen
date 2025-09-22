@@ -2,7 +2,11 @@ package org.mreposa.statgen.model.adndmethod;
 
 import java.util.Random;
 
-public class ThreeDSixSixTimes implements StatMethod {
+public class ThreeDSixSixTimes extends StatMethod {
+    public ThreeDSixSixTimes() {
+        super();
+    }
+
     public int generate(Random rand) {
         int total = 0;
         int[] rolls = new int[6];
