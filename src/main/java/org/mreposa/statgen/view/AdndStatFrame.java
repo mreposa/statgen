@@ -21,7 +21,6 @@ public class AdndStatFrame extends StatFrame {
             JRadioButton btn = new JRadioButton();
             btn.setText(StatMethod.AVAILABLE_METHODS[a]);
             btn.setActionCommand(StatMethod.AVAILABLE_METHODS[a]);
-            btn.addActionListener(this);
             this.methodButtonGroup.add(btn);
             this.methodPanel.add(btn);
             if (a == 0) {

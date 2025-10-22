@@ -11,7 +11,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.Serial;
 
-public abstract class StatFrame extends JFrame implements ActionListener {
+public abstract class StatFrame extends JFrame {
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -19,8 +19,9 @@ public abstract class StatFrame extends JFrame implements ActionListener {
     private static final int PANEL_HEIGHT = 1000;
 
     private final JMenuBar menuBar;
-    private final ButtonGroup classButtonGroup;
-    private final ButtonGroup raceButtonGroup;
+
+    private final JComboBox<String> charClass;
+    private final JComboBox<String> charRace;
 
     protected JPanel methodPanel;
     protected ButtonGroup methodButtonGroup;
@@ -36,9 +37,9 @@ public abstract class StatFrame extends JFrame implements ActionListener {
         super();
 
         JPanel basePanel;
+        JPanel classPanel;
         JPanel displayPanel;
         JPanel topPanel;
-        JPanel buttonPanel;
         JButton generateButton;
         JButton clearButton;
 
@@ -54,7 +55,7 @@ public abstract class StatFrame extends JFrame implements ActionListener {
         createFileMenu();
         createToolsMenu();
         createHelpMenu();
-        this.setJMenuBar(this.menuBar);
+        setJMenuBar(this.menuBar);
 
         basePanel = new JPanel();
         basePanel.setLayout(new BorderLayout());
@@ -63,15 +64,30 @@ public abstract class StatFrame extends JFrame implements ActionListener {
         basePanel.setPreferredSize(d);
         add(basePanel);
 
-        buttonPanel = new JPanel();
-        buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        classPanel = new JPanel();
+        classPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+        JLabel label1 = new JLabel("Class:");
+        classPanel.add(label1);
+
+        this.charClass = new JComboBox<>(PlayerCharacterClass.AVAILABLE_CLASSES);
+        this.charClass.setSelectedIndex(0);
+        classPanel.add(this.charClass);
+
+        JLabel label2 = new JLabel("Race:");
+        classPanel.add(label2);
+
+        this.charRace = new JComboBox<>(PlayerCharacterRace.AVAILABLE_RACES);
+        this.charRace.setSelectedIndex(0);
+        classPanel.add(this.charRace);
+
         generateButton = new JButton("Generate Stats");
         Dimension bd = new Dimension(145, 20);
         generateButton.setSize(bd);
         generateButton.setPreferredSize(bd);
         generateButton.setMaximumSize(bd);
         generateButton.addActionListener(_ -> generateStats());
-        buttonPanel.add(generateButton);
+        classPanel.add(generateButton);
 
         clearButton = new JButton("Clear");
         Dimension bd2 = new Dimension(90, 20);
@@ -79,7 +95,18 @@ public abstract class StatFrame extends JFrame implements ActionListener {
         clearButton.setPreferredSize(bd2);
         clearButton.setMaximumSize(bd2);
         clearButton.addActionListener(_ -> clearDisplay());
-        buttonPanel.add(clearButton);
+        classPanel.add(clearButton);
+
+        this.methodPanel = new JPanel();
+        this.methodPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        JLabel label3 = new JLabel("Rolling Method:");
+        this.methodPanel.add(label3);
+        this.methodButtonGroup = new ButtonGroup();
+
+        topPanel = new JPanel();
+        topPanel.setLayout(new GridLayout(2, 1));
+        topPanel.add(classPanel);
+        topPanel.add(this.methodPanel);
 
         displayPanel = new JPanel();
         displayPanel.setLayout(new BorderLayout());
@@ -89,51 +116,6 @@ public abstract class StatFrame extends JFrame implements ActionListener {
         this.displayArea.setPreferredSize(d);
         displayPanel.add(this.displayArea);
 
-        JPanel classPanel = new JPanel();
-        classPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-
-        this.classButtonGroup = new ButtonGroup();
-        for (int a = 0; a < PlayerCharacterClass.AVAILABLE_CLASSES.length; a++) {
-            JRadioButton btn = new JRadioButton();
-            btn.setText(PlayerCharacterClass.AVAILABLE_CLASSES[a]);
-            btn.setActionCommand(PlayerCharacterClass.AVAILABLE_CLASSES[a]);
-            btn.addActionListener(this);
-            this.classButtonGroup.add(btn);
-            classPanel.add(btn);
-            if (a == 0) {
-                this.classButtonGroup.setSelected(btn.getModel(), true);
-                this.selectedClass = PlayerCharacterClass.AVAILABLE_CLASSES[0];
-            }
-        }
-
-        JPanel racePanel = new JPanel();
-        racePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-
-        this.raceButtonGroup = new ButtonGroup();
-        for (int a = 0; a < PlayerCharacterRace.AVAILABLE_RACES.length; a++) {
-            JRadioButton btn = new JRadioButton();
-            btn.setText(PlayerCharacterRace.AVAILABLE_RACES[a]);
-            btn.setActionCommand(PlayerCharacterRace.AVAILABLE_RACES[a]);
-            btn.addActionListener(this);
-            this.raceButtonGroup.add(btn);
-            racePanel.add(btn);
-            if (a == 0) {
-                this.raceButtonGroup.setSelected(btn.getModel(), true);
-                this.selectedRace = PlayerCharacterRace.AVAILABLE_RACES[0];
-            }
-        }
-
-        this.methodPanel = new JPanel();
-        this.methodPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        this.methodButtonGroup = new ButtonGroup();
-
-        topPanel = new JPanel();
-        topPanel.setLayout(new GridLayout(4, 1));
-        topPanel.add(racePanel);
-        topPanel.add(classPanel);
-        topPanel.add(this.methodPanel);
-        topPanel.add(buttonPanel);
-
         basePanel.add(topPanel, BorderLayout.NORTH);
         basePanel.add(displayPanel, BorderLayout.CENTER);
 
@@ -141,16 +123,12 @@ public abstract class StatFrame extends JFrame implements ActionListener {
         this.setVisible(true);
     }
 
-    public void actionPerformed(ActionEvent e) {
-        if (e != null) {
-            this.selectedClass = classButtonGroup.getSelection().getActionCommand();
-            this.selectedRace = raceButtonGroup.getSelection().getActionCommand();
-            this.selectedMethod = methodButtonGroup.getSelection().getActionCommand();
-        }
-    }
+     private void generateStats() {
+        this.selectedClass = (String)this.charClass.getSelectedItem();
+        this.selectedRace = (String)this.charRace.getSelectedItem();
+        this.selectedMethod = this.methodButtonGroup.getSelection().getActionCommand();
 
-    private void generateStats() {
-        int[] stats = statGenerator.generate(this.selectedClass, this.selectedRace, this.selectedMethod);
+        int[] stats = this.statGenerator.generate(this.selectedClass, this.selectedRace, this.selectedMethod);
 
         String displayStats = getDisplayStats(stats);
 
