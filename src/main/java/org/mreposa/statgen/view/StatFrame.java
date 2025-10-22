@@ -30,6 +30,8 @@ public abstract class StatFrame extends JFrame implements ActionListener {
     protected String selectedRace;
     protected String selectedMethod = "NONE";
 
+    private JFrame functionFrame;
+
     public StatFrame() {
         super();
 
@@ -50,6 +52,7 @@ public abstract class StatFrame extends JFrame implements ActionListener {
 
         this.menuBar = new JMenuBar();
         createFileMenu();
+        createToolsMenu();
         createHelpMenu();
         this.setJMenuBar(this.menuBar);
 
@@ -170,6 +173,9 @@ public abstract class StatFrame extends JFrame implements ActionListener {
      * Shut down the application
      */
     private void exitApp() {
+        if (this.functionFrame != null) {
+            this.functionFrame.dispose();
+        }
         this.dispose();
         System.exit(0);
     }
@@ -185,6 +191,17 @@ public abstract class StatFrame extends JFrame implements ActionListener {
         menu.add(exitMenuItem);
     }
 
+    private void createToolsMenu() {
+        JMenu menu = new JMenu("Tools");
+        this.menuBar.add(menu);
+
+        // Tools -> Thief Functions
+        JMenuItem functionsMenuItem = new JMenuItem("Thief Functions");
+        functionsMenuItem.setAccelerator(KeyStroke.getKeyStroke('T', InputEvent.CTRL_DOWN_MASK));
+        functionsMenuItem.addActionListener(_ -> showThiefFunctions());
+        menu.add(functionsMenuItem);
+    }
+
     private void createHelpMenu() {
         JMenu menu = new JMenu("Help");
         this.menuBar.add(menu);
@@ -197,5 +214,14 @@ public abstract class StatFrame extends JFrame implements ActionListener {
 
     private void showAbout() {
         JOptionPane.showMessageDialog(this, getAbout(), "About", JOptionPane.PLAIN_MESSAGE);
+    }
+
+    private void showThiefFunctions() {
+        if (this.functionFrame == null) {
+            this.functionFrame = new ThiefFunctionFrame();
+        }
+        else {
+            this.functionFrame.setVisible(true);
+        }
     }
 }
