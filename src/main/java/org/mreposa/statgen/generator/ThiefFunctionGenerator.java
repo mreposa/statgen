@@ -4,14 +4,14 @@ import org.mreposa.statgen.model.adndthieffunction.ThiefFunctionTable;
 
 public class ThiefFunctionGenerator {
     public double[] generate(int selectedLevel, int selectedRace, int selectedArmor, int selectedDexterity) {
-        double[] results = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+        double[] results = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 
         double[] thiefFunctions = ThiefFunctionTable.FUNCTION_VALUES_BY_LEVEL[selectedLevel];
         double[] raceMods = ThiefFunctionTable.FUNCTION_MODS_BY_RACE[selectedRace];
         double[] armorMods = ThiefFunctionTable.FUNCTION_MODS_BY_ARMOR[selectedArmor];
         double[] dexterityMods = ThiefFunctionTable.FUNCTION_MODS_BY_DEX[selectedDexterity];
 
-        for (int i = 0; i < ThiefFunctionTable.AVAILABLE_FUNCTIONS.length; i++) {
+        for (int i = 0; i < ThiefFunctionTable.AVAILABLE_FUNCTIONS.length - 1; i++) {
             if (i == ThiefFunctionTable.FUNCTION_CW) {
                 // Climb Walls is a special case
                 results[i] = thiefFunctions[i];
@@ -49,6 +49,23 @@ public class ThiefFunctionGenerator {
             else {
                 results[i] = thiefFunctions[i] + dexterityMods[i] + raceMods[i] + armorMods[i];
             }
+        }
+
+        // Adjust for level drop-down offset
+       int offsetLevel = selectedLevel + 1;
+
+        // Backstab multiplier value
+        if (offsetLevel < 5) {
+            results[results.length - 1] = 2.0;
+        }
+        else if (offsetLevel < 9) {
+            results[results.length - 1] = 3.0;
+        }
+        else if (offsetLevel < 13) {
+            results[results.length - 1] = 4.0;
+        }
+        else {
+            results[results.length - 1] = 5.0;
         }
 
         return results;

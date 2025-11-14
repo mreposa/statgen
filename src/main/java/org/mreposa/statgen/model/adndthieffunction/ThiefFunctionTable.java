@@ -1,7 +1,7 @@
 package org.mreposa.statgen.model.adndthieffunction;
 
 public class ThiefFunctionTable {
-    public static final String[] AVAILABLE_FUNCTIONS = {"PP", "OL", "FT", "MS", "HS", "HN", "CW", "RL"};
+    public static final String[] AVAILABLE_FUNCTIONS = {"PP", "OL", "FT", "MS", "HS", "HN", "CW", "RL", "Backstab"};
     public static final int FUNCTION_CW = 6;
 
     public static final String[] AVAILABLE_LEVELS = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"};

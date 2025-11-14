@@ -105,7 +105,7 @@ public class ThiefFunctionPanel extends JPanel {
         StringBuilder output = new StringBuilder();
 
         if (functionValues != null) {
-            for (int i = 0; i < ThiefFunctionTable.AVAILABLE_FUNCTIONS.length; i++) {
+            for (int i = 0; i < ThiefFunctionTable.AVAILABLE_FUNCTIONS.length - 1; i++) {
                 output.append(ThiefFunctionTable.AVAILABLE_FUNCTIONS[i]);
                 output.append(" ");
 
@@ -123,10 +123,12 @@ public class ThiefFunctionPanel extends JPanel {
                 }
                 output.append("%");
 
-                if (i < ThiefFunctionTable.AVAILABLE_FUNCTIONS.length - 1) {
-                    output.append(", ");
-                }
+                output.append(", ");
             }
+
+            output.append(ThiefFunctionTable.AVAILABLE_FUNCTIONS[ThiefFunctionTable.AVAILABLE_FUNCTIONS.length - 1]);
+            output.append(" x");
+            output.append((int) functionValues[ThiefFunctionTable.AVAILABLE_FUNCTIONS.length - 1]);
 
             output.append("\n\n");
         }
