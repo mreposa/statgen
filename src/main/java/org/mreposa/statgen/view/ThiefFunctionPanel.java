@@ -9,35 +9,28 @@ import javax.swing.text.Document;
 import java.awt.*;
 import java.io.Serial;
 
-public class ThiefFunctionFrame extends JFrame {
+public class ThiefFunctionPanel extends JPanel {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private static final int PANEL_WIDTH = 800;
-    private static final int PANEL_HEIGHT = 400;
+    private static final int PANEL_WIDTH = 1600;
+    private static final int PANEL_HEIGHT = 1000;
 
     private final JComboBox<String> level;
     private final JComboBox<String> race;
     private final JComboBox<String> armor;
     private final JComboBox<String> dexterity;
-    private final JEditorPane displayArea;
+    private final JEditorPane display;
 
-    public ThiefFunctionFrame() {
+    public ThiefFunctionPanel() {
         super();
 
-        this.setTitle("Thief Functions");
-        this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-
-        JPanel basePanel = new JPanel();
-        basePanel.setLayout(new BorderLayout());
+        setLayout(new BorderLayout());
         Dimension d = new Dimension(PANEL_WIDTH, PANEL_HEIGHT);
-        basePanel.setSize(d);
-        basePanel.setPreferredSize(d);
-        add(basePanel);
+        setPreferredSize(d);
 
         JPanel selectionPanel = new JPanel();
-        selectionPanel.setLayout(new FlowLayout());
-        basePanel.add(selectionPanel, BorderLayout.NORTH);
+        selectionPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
         JLabel label1 = new JLabel("Level:");
         selectionPanel.add(label1);
@@ -83,18 +76,10 @@ public class ThiefFunctionFrame extends JFrame {
         clearButton.addActionListener(_ -> clearDisplay());
         selectionPanel.add(clearButton);
 
-        JPanel displayPanel = new JPanel();
-        displayPanel.setLayout(new BorderLayout());
+        this.display = new JEditorPane();
 
-        this.displayArea = new JEditorPane();
-        this.displayArea.setSize(d);
-        this.displayArea.setPreferredSize(d);
-        displayPanel.add(this.displayArea);
-
-        basePanel.add(displayPanel, BorderLayout.CENTER);
-
-        this.pack();
-        this.setVisible(true);
+        add(selectionPanel, BorderLayout.NORTH);
+        add(this.display, BorderLayout.CENTER);
     }
 
     private void getThiefFunctions() {
@@ -109,10 +94,10 @@ public class ThiefFunctionFrame extends JFrame {
         String displayFunctions = getDisplayFunctions(functions);
 
         try {
-            Document doc = this.displayArea.getDocument();
+            Document doc = this.display.getDocument();
             doc.insertString(doc.getLength(), displayFunctions, null);
         } catch (BadLocationException ble) {
-            this.displayArea.setText("ERROR: " + ble.getMessage());
+            this.display.setText("ERROR: " + ble.getMessage());
         }
     }
 
@@ -153,6 +138,6 @@ public class ThiefFunctionFrame extends JFrame {
     }
 
     private void clearDisplay() {
-        this.displayArea.setText("");
+        this.display.setText("");
     }
 }

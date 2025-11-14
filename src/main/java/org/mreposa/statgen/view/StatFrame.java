@@ -30,15 +30,17 @@ public abstract class StatFrame extends JFrame {
     protected String selectedClass;
     protected String selectedRace;
     protected String selectedMethod = "NONE";
-
-    private JFrame functionFrame;
+    protected JTabbedPane tabs;
 
     public StatFrame() {
         super();
 
+        setLayout(new BorderLayout());
+
+        tabs = new JTabbedPane();
+
         JPanel basePanel;
         JPanel classPanel;
-        JPanel displayPanel;
         JPanel topPanel;
         JButton generateButton;
         JButton clearButton;
@@ -53,7 +55,6 @@ public abstract class StatFrame extends JFrame {
 
         this.menuBar = new JMenuBar();
         createFileMenu();
-        createToolsMenu();
         createHelpMenu();
         setJMenuBar(this.menuBar);
 
@@ -62,7 +63,6 @@ public abstract class StatFrame extends JFrame {
         Dimension d = new Dimension(PANEL_WIDTH, PANEL_HEIGHT);
         basePanel.setSize(d);
         basePanel.setPreferredSize(d);
-        add(basePanel);
 
         classPanel = new JPanel();
         classPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -108,16 +108,14 @@ public abstract class StatFrame extends JFrame {
         topPanel.add(classPanel);
         topPanel.add(this.methodPanel);
 
-        displayPanel = new JPanel();
-        displayPanel.setLayout(new BorderLayout());
-
         this.displayArea = new JEditorPane();
-        this.displayArea.setSize(d);
-        this.displayArea.setPreferredSize(d);
-        displayPanel.add(this.displayArea);
 
         basePanel.add(topPanel, BorderLayout.NORTH);
-        basePanel.add(displayPanel, BorderLayout.CENTER);
+        basePanel.add(this.displayArea, BorderLayout.CENTER);
+
+        tabs.add("Character Stats", basePanel);
+
+        add(tabs);
 
         this.pack();
         this.setVisible(true);
@@ -151,9 +149,6 @@ public abstract class StatFrame extends JFrame {
      * Shut down the application
      */
     private void exitApp() {
-        if (this.functionFrame != null) {
-            this.functionFrame.dispose();
-        }
         this.dispose();
         System.exit(0);
     }
@@ -169,17 +164,6 @@ public abstract class StatFrame extends JFrame {
         menu.add(exitMenuItem);
     }
 
-    private void createToolsMenu() {
-        JMenu menu = new JMenu("Tools");
-        this.menuBar.add(menu);
-
-        // Tools -> Thief Functions
-        JMenuItem functionsMenuItem = new JMenuItem("Thief Functions");
-        functionsMenuItem.setAccelerator(KeyStroke.getKeyStroke('T', InputEvent.CTRL_DOWN_MASK));
-        functionsMenuItem.addActionListener(_ -> showThiefFunctions());
-        menu.add(functionsMenuItem);
-    }
-
     private void createHelpMenu() {
         JMenu menu = new JMenu("Help");
         this.menuBar.add(menu);
@@ -192,14 +176,5 @@ public abstract class StatFrame extends JFrame {
 
     private void showAbout() {
         JOptionPane.showMessageDialog(this, getAbout(), "About", JOptionPane.PLAIN_MESSAGE);
-    }
-
-    private void showThiefFunctions() {
-        if (this.functionFrame == null) {
-            this.functionFrame = new ThiefFunctionFrame();
-        }
-        else {
-            this.functionFrame.setVisible(true);
-        }
     }
 }

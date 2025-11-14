@@ -28,6 +28,8 @@ public class AdndStatFrame extends StatFrame {
                 this.selectedMethod = StatMethod.AVAILABLE_METHODS[0];
             }
         }
+
+        this.tabs.add("Thief Functions", new ThiefFunctionPanel());
     }
 
     @Override
