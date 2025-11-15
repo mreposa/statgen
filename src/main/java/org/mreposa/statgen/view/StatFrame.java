@@ -1,5 +1,6 @@
 package org.mreposa.statgen.view;
 
+import org.mreposa.statgen.generator.DiceRollGenerator;
 import org.mreposa.statgen.generator.StatGenerator;
 import org.mreposa.statgen.model.adndclass.PlayerCharacterClass;
 import org.mreposa.statgen.model.adndrace.PlayerCharacterRace;
@@ -25,15 +26,19 @@ public abstract class StatFrame extends JFrame {
 
     protected JPanel methodPanel;
     protected ButtonGroup methodButtonGroup;
-    protected final JEditorPane displayArea;
+    protected final JEditorPane display;
     protected StatGenerator statGenerator;
+    protected DiceRollGenerator rollGenerator;
     protected String selectedClass;
     protected String selectedRace;
     protected String selectedMethod = "NONE";
     protected JTabbedPane tabs;
 
-    public StatFrame() {
+    public StatFrame(StatGenerator statGenerator, DiceRollGenerator rollGenerator) {
         super();
+
+        this.statGenerator = statGenerator;
+        this.rollGenerator = rollGenerator;
 
         setLayout(new BorderLayout());
 
@@ -108,12 +113,15 @@ public abstract class StatFrame extends JFrame {
         topPanel.add(classPanel);
         topPanel.add(this.methodPanel);
 
-        this.displayArea = new JEditorPane();
+        this.display = new JEditorPane();
+        this.display.setEditable(false);
 
         basePanel.add(topPanel, BorderLayout.NORTH);
-        basePanel.add(this.displayArea, BorderLayout.CENTER);
-
+        basePanel.add(this.display, BorderLayout.CENTER);
         tabs.add("Character Stats", basePanel);
+
+        DicePanel dicePanel = new DicePanel(this.rollGenerator);
+        tabs.add("Roll Dice", dicePanel);
 
         add(tabs);
 
@@ -131,10 +139,10 @@ public abstract class StatFrame extends JFrame {
         String displayStats = getDisplayStats(stats);
 
         try {
-            Document doc = this.displayArea.getDocument();
+            Document doc = this.display.getDocument();
             doc.insertString(doc.getLength(), displayStats, null);
         } catch (BadLocationException ble) {
-            this.displayArea.setText("ERROR: " + ble.getMessage());
+            this.display.setText("ERROR: " + ble.getMessage());
         }
     }
 
@@ -142,7 +150,7 @@ public abstract class StatFrame extends JFrame {
     public abstract String getAbout();
 
     private void clearDisplay() {
-        this.displayArea.setText("");
+        this.display.setText("");
     }
 
     /*

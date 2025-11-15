@@ -7,8 +7,11 @@ import org.mreposa.statgen.model.adndrace.PlayerCharacterRace;
 import java.util.Random;
 
 public class AdndStatGenerator implements StatGenerator {
+    private final Random rand;
+
     public AdndStatGenerator() {
         super();
+        this.rand = new Random(System.currentTimeMillis());
     }
 
     @Override
@@ -24,7 +27,6 @@ public class AdndStatGenerator implements StatGenerator {
             int[] raceUpdates = pcRace.getUpdates();
             int[] raceMinimums = pcRace.getMinimums();
 
-            Random rand = new Random(System.currentTimeMillis());
             int total;
             StatMethod method;
 
@@ -32,26 +34,26 @@ public class AdndStatGenerator implements StatGenerator {
                 // Generate base stat value
                 if (selectedMethod.equals(StatMethod.AVAILABLE_METHODS[1])) {
                     method = new ThreeDSix();
-                    total = method.generate(rand);
+                    total = method.generate(this.rand);
 
                     // Adjust stats using class updates
                     total = total + classUpdates[statSlot];
                 }
                 else if (selectedMethod.equals(StatMethod.AVAILABLE_METHODS[2])) {
                     method = new FiveDSixBestThree();
-                    total = method.generate(rand);
+                    total = method.generate(this.rand);
                 }
                 else if (selectedMethod.equals(StatMethod.AVAILABLE_METHODS[3])) {
                     method = new FourDSixDropLowest();
-                    total = method.generate(rand);
+                    total = method.generate(this.rand);
                 }
                 else if (selectedMethod.equals(StatMethod.AVAILABLE_METHODS[4])) {
                     method = new ThreeDSixSixTimes();
-                    total = method.generate(rand);
+                    total = method.generate(this.rand);
                 }
                 else {
                     method = new ThreeDSix();
-                    total = method.generate(rand);
+                    total = method.generate(this.rand);
                 }
 
                 if (total > PlayerCharacterClass.MAX_STAT_VALUE) {
@@ -68,7 +70,7 @@ public class AdndStatGenerator implements StatGenerator {
                     case PlayerCharacterClass.STAT_EX_STR: {
                         // Generate Exceptional ST value (0 - 100)
                         if (stats[PlayerCharacterClass.STAT_STR] == PlayerCharacterClass.MAX_STAT_VALUE) {
-                            total = rand.nextInt(100) + 1;
+                            total = this.rand.nextInt(100) + 1;
                         } else {
                             total = 0;
                         }

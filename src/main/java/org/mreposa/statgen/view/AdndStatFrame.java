@@ -1,11 +1,11 @@
 package org.mreposa.statgen.view;
 
+import org.mreposa.statgen.generator.AdndDiceRollGenerator;
 import org.mreposa.statgen.model.adndclass.PlayerCharacterClass;
 import org.mreposa.statgen.generator.AdndStatGenerator;
 import org.mreposa.statgen.model.adndmethod.StatMethod;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class AdndStatFrame extends StatFrame {
     private static final String APP_VERSION = "1.0.0";
@@ -13,9 +13,9 @@ public class AdndStatFrame extends StatFrame {
     private static final String ABOUT_MESSAGE = APP_TITLE + "\nVersion " + APP_VERSION + "\n" + "Michael Reposa\n" + "27-AUG-2025";
 
     public AdndStatFrame() {
-        super();
+        super(new AdndStatGenerator(), new AdndDiceRollGenerator());
+
         this.setTitle(APP_TITLE);
-        this.statGenerator = new AdndStatGenerator();
 
         for (int a = 0; a < StatMethod.AVAILABLE_METHODS.length; a++) {
             JRadioButton btn = new JRadioButton();
@@ -29,7 +29,7 @@ public class AdndStatFrame extends StatFrame {
             }
         }
 
-        this.tabs.add("Thief Functions", new ThiefFunctionPanel());
+        this.tabs.add("Thief Functions", new AdndThiefFunctionPanel());
     }
 
     @Override

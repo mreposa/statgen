@@ -1,6 +1,6 @@
 package org.mreposa.statgen.view;
 
-import org.mreposa.statgen.generator.ThiefFunctionGenerator;
+import org.mreposa.statgen.generator.AdndThiefFunctionGenerator;
 import org.mreposa.statgen.model.adndthieffunction.ThiefFunctionTable;
 
 import javax.swing.*;
@@ -9,7 +9,7 @@ import javax.swing.text.Document;
 import java.awt.*;
 import java.io.Serial;
 
-public class ThiefFunctionPanel extends JPanel {
+public class AdndThiefFunctionPanel extends JPanel {
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -22,7 +22,7 @@ public class ThiefFunctionPanel extends JPanel {
     private final JComboBox<String> dexterity;
     private final JEditorPane display;
 
-    public ThiefFunctionPanel() {
+    public AdndThiefFunctionPanel() {
         super();
 
         setLayout(new BorderLayout());
@@ -77,6 +77,7 @@ public class ThiefFunctionPanel extends JPanel {
         selectionPanel.add(clearButton);
 
         this.display = new JEditorPane();
+        this.display.setEditable(false);
 
         add(selectionPanel, BorderLayout.NORTH);
         add(this.display, BorderLayout.CENTER);
@@ -88,7 +89,7 @@ public class ThiefFunctionPanel extends JPanel {
         int selectedArmor = this.armor.getSelectedIndex();
         int selectedDexterity = this.dexterity.getSelectedIndex();
 
-        ThiefFunctionGenerator generator = new ThiefFunctionGenerator();
+        AdndThiefFunctionGenerator generator = new AdndThiefFunctionGenerator();
         double[] functions = generator.generate(selectedLevel, selectedRace, selectedArmor, selectedDexterity);
 
         String displayFunctions = getDisplayFunctions(functions);

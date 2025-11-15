@@ -2,7 +2,7 @@ package org.mreposa.statgen.generator;
 
 import org.mreposa.statgen.model.adndthieffunction.ThiefFunctionTable;
 
-public class ThiefFunctionGenerator {
+public class AdndThiefFunctionGenerator {
     public double[] generate(int selectedLevel, int selectedRace, int selectedArmor, int selectedDexterity) {
         double[] results = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 
