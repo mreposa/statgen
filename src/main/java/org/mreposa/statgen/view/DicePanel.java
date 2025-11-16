@@ -33,7 +33,8 @@ public class DicePanel extends JPanel {
         JPanel selectionPanel = new JPanel();
         selectionPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-        JLabel label1 = new JLabel("Number:");
+        String labelText = "Number (" + DiceRollGenerator.MIN_DICE_COUNT + " - " + DiceRollGenerator.MAX_DICE_COUNT + "):";
+        JLabel label1 = new JLabel(labelText);
         selectionPanel.add(label1);
 
         this.diceNumber = new JTextField("1");
@@ -76,10 +77,28 @@ public class DicePanel extends JPanel {
     }
 
     private void displayRoll() {
-        int roll = this.rollGenerator.roll(Integer.parseInt(this.diceNumber.getText()),
-                Integer.parseInt(this.diceButtonGroup.getSelection().getActionCommand()));
+        int diceCount = Integer.parseInt(this.diceNumber.getText());
+        int diceSides = Integer.parseInt(this.diceButtonGroup.getSelection().getActionCommand());
+
+        int roll = this.rollGenerator.roll(diceCount, diceSides);
+
+        String rollText;
+        if (diceCount < DiceRollGenerator.MIN_DICE_COUNT) {
+            rollText = Integer.toString(DiceRollGenerator.MIN_DICE_COUNT);
+        }
+        else if (diceCount > DiceRollGenerator.MAX_DICE_COUNT) {
+            rollText = Integer.toString(DiceRollGenerator.MAX_DICE_COUNT);
+        }
+        else {
+            rollText = this.diceNumber.getText();
+        }
 
         StringBuilder output = new StringBuilder();
+        output.append("Rolling ");
+        output.append(rollText);
+        output.append("d");
+        output.append(this.diceButtonGroup.getSelection().getActionCommand());
+        output.append("\n");
         output.append(roll);
         output.append("\n");
 

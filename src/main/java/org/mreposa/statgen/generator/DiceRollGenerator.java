@@ -3,6 +3,11 @@ package org.mreposa.statgen.generator;
 import java.util.Random;
 
 public abstract class DiceRollGenerator {
+    public static final int MIN_DICE_COUNT = 1;
+    public static final int MAX_DICE_COUNT = 999;
+    public static final int MIN_DICE_SIDES = 2;
+    public static final int MAX_DICE_SIDES = 100;
+
     private final Random rand;
 
     public DiceRollGenerator() {
@@ -12,8 +17,24 @@ public abstract class DiceRollGenerator {
     public abstract int[] getDice();
 
     public int roll(int diceCount, int diceSides) {
+        // Constrain dice count
+        if (diceCount < MIN_DICE_COUNT) {
+            diceCount = MIN_DICE_COUNT;
+        }
+        else if (diceCount > MAX_DICE_COUNT) {
+            diceCount = MAX_DICE_COUNT;
+        }
+
+        // Constrain dice sides
+        if (diceSides < MIN_DICE_SIDES) {
+            diceSides = MIN_DICE_SIDES;
+        }
+        else if (diceSides > MAX_DICE_SIDES) {
+            diceSides = MAX_DICE_SIDES;
+        }
+
         int total = 0;
-        int roll = 0;
+        int roll;
 
         for (int i = 0; i < diceCount; i++) {
             roll = this.rand.nextInt(diceSides) + 1;
