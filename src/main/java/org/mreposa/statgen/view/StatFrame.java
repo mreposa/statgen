@@ -2,8 +2,8 @@ package org.mreposa.statgen.view;
 
 import org.mreposa.statgen.generator.DiceRollGenerator;
 import org.mreposa.statgen.generator.StatGenerator;
-import org.mreposa.statgen.model.adndclass.PlayerCharacterClass;
-import org.mreposa.statgen.model.adndrace.PlayerCharacterRace;
+import org.mreposa.statgen.model.adnd.playerclass.PlayerCharacterClass;
+import org.mreposa.statgen.model.adnd.race.PlayerCharacterRace;
 
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
@@ -20,10 +20,8 @@ public abstract class StatFrame extends JFrame {
     private static final int PANEL_HEIGHT = 1000;
 
     private final JMenuBar menuBar;
-
     private final JComboBox<String> charClass;
     private final JComboBox<String> charRace;
-
     protected JPanel methodPanel;
     protected ButtonGroup methodButtonGroup;
     protected final JEditorPane display;
@@ -91,7 +89,7 @@ public abstract class StatFrame extends JFrame {
         generateButton.setSize(bd);
         generateButton.setPreferredSize(bd);
         generateButton.setMaximumSize(bd);
-        generateButton.addActionListener(_ -> generateStats());
+        generateButton.addActionListener(_ -> generateAndDisplayStats());
         classPanel.add(generateButton);
 
         clearButton = new JButton("Clear");
@@ -129,14 +127,13 @@ public abstract class StatFrame extends JFrame {
         this.setVisible(true);
     }
 
-     private void generateStats() {
+     private void generateAndDisplayStats() {
         this.selectedClass = (String)this.charClass.getSelectedItem();
         this.selectedRace = (String)this.charRace.getSelectedItem();
         this.selectedMethod = this.methodButtonGroup.getSelection().getActionCommand();
 
         int[] stats = this.statGenerator.generate(this.selectedClass, this.selectedRace, this.selectedMethod);
-
-        String displayStats = getDisplayStats(stats);
+        String displayStats = formatStats(stats);
 
         try {
             Document doc = this.display.getDocument();
@@ -146,7 +143,7 @@ public abstract class StatFrame extends JFrame {
         }
     }
 
-    public abstract String getDisplayStats(int[] stats);
+    public abstract String formatStats(int[] stats);
     public abstract String getAbout();
 
     private void clearDisplay() {

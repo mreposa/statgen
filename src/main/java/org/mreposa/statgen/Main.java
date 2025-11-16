@@ -1,6 +1,6 @@
 package org.mreposa.statgen;
 
-import org.mreposa.statgen.view.AdndStatFrame;
+import org.mreposa.statgen.view.adnd.AdndStatFrame;
 
 import javax.swing.*;
 
