@@ -1,5 +1,9 @@
 package org.mreposa.statgen.generator;
 
+import org.mreposa.statgen.model.roll.Roll;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public abstract class DiceRollGenerator {
@@ -16,7 +20,7 @@ public abstract class DiceRollGenerator {
 
     public abstract int[] getDice();
 
-    public int roll(int diceCount, int diceSides) {
+    public Roll roll(int diceCount, int diceSides) {
         // Constrain dice count
         if (diceCount < MIN_DICE_COUNT) {
             diceCount = MIN_DICE_COUNT;
@@ -34,13 +38,19 @@ public abstract class DiceRollGenerator {
         }
 
         int total = 0;
-        int roll;
+        int value;
+        List<Integer> values = new ArrayList<>();
 
         for (int i = 0; i < diceCount; i++) {
-            roll = this.rand.nextInt(diceSides) + 1;
-            total = total + roll;
+            value = this.rand.nextInt(diceSides) + 1;
+            values.add(value);
+            total = total + value;
         }
 
-        return total;
+        Roll roll = new Roll();
+        roll.setTotal(total);
+        roll.setValues(values);
+
+        return roll;
     }
 }

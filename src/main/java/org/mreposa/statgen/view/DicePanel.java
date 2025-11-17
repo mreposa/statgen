@@ -1,6 +1,9 @@
 package org.mreposa.statgen.view;
 
 import org.mreposa.statgen.generator.DiceRollGenerator;
+import org.mreposa.statgen.model.roll.Roll;
+
+import java.util.List;
 
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
@@ -80,7 +83,20 @@ public class DicePanel extends JPanel {
         int diceCount = Integer.parseInt(this.diceNumber.getText());
         int diceSides = Integer.parseInt(this.diceButtonGroup.getSelection().getActionCommand());
 
-        int roll = this.rollGenerator.roll(diceCount, diceSides);
+        Roll roll = this.rollGenerator.roll(diceCount, diceSides);
+
+        String output = getOutput(diceCount, roll);
+
+        try {
+            Document doc = this.display.getDocument();
+            doc.insertString(doc.getLength(), output, null);
+        } catch (BadLocationException ble) {
+            this.display.setText("ERROR: " + ble.getMessage());
+        }
+    }
+
+    private String getOutput(int diceCount, Roll roll) {
+        StringBuilder output = new StringBuilder();
 
         String rollText;
         if (diceCount < DiceRollGenerator.MIN_DICE_COUNT) {
@@ -93,21 +109,24 @@ public class DicePanel extends JPanel {
             rollText = this.diceNumber.getText();
         }
 
-        StringBuilder output = new StringBuilder();
         output.append("Rolling ");
         output.append(rollText);
         output.append("d");
         output.append(this.diceButtonGroup.getSelection().getActionCommand());
-        output.append("\n");
-        output.append(roll);
-        output.append("\n");
-
-        try {
-            Document doc = this.display.getDocument();
-            doc.insertString(doc.getLength(), output.toString(), null);
-        } catch (BadLocationException ble) {
-            this.display.setText("ERROR: " + ble.getMessage());
+        output.append(" [");
+        List<Integer> values = roll.getValues();
+        for (int a = 0; a < values.size(); a++) {
+            output.append(values.get(a));
+            if (a < values.size() - 1) {
+                output.append(", ");
+            }
         }
+        output.append("]");
+        output.append("\n");
+        output.append(roll.getTotal());
+        output.append("\n\n");
+
+        return output.toString();
     }
 
     private void clearDisplay() {
