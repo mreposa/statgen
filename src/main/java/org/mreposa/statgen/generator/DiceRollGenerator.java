@@ -8,7 +8,7 @@ import java.util.Random;
 
 public abstract class DiceRollGenerator {
     public static final int MIN_DICE_COUNT = 1;
-    public static final int MAX_DICE_COUNT = 999;
+    public static final int MAX_DICE_COUNT = 99;
     public static final int MIN_DICE_SIDES = 2;
     public static final int MAX_DICE_SIDES = 100;
 
